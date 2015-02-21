@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shiny Application for Mapping Local Galaxies</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Shiny Application for Mapping Local Galaxies">
+  <meta name="author" content="Miroslav Micic">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Shiny Application for Mapping Local Galaxies</h1>
+    <h2>Developing Data Products Course Project</h2>
+    <p>Miroslav Micic<br/></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>Zoom through the Local Universe with our App!</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li>Have you ever wondered how our Local Universe looks like?</li>
+<li>If YES, then try our shiny application - &quot;Local Galaxies&quot;.</li>
+<li>Our app uses data from the state-of-the-art computer simulation called &quot;via lactea 2&quot;.<br></li>
+</ul>
+
+<p>Via Lactea 1 (VL-1) and Via Lactea 2 (VL-2) are high resolution simulations of our galaxy (Milky Way)
+and thousands of neighboring galaxies. Details of this project can be found at: 
+<a href="http://www.ics.uzh.ch/%7Ediemand/vl/">http://www.ics.uzh.ch/~diemand/vl/</a>.</p>
+
+<ul>
+<li><p>The goal of this application is to give you the perception of galaxy sizes, and distances between galaxies close to Milky Way. For simplicity, we do not explore the shapes of galaxies. </p></li>
+<li><p>You can find the application here:
+<a href="https://miroslavmicic.shinyapps.io/Local_Galaxies/">https://miroslavmicic.shinyapps.io/Local_Galaxies/</a></p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>How does it work?</h2>
+  </hgroup>
+  <article data-timings="">
+    <ul>
+<li><p>Our application reads in the entire data set of VL-2 simulation : 
+<a href="http://www.ics.uzh.ch/%7Ediemand/vl2/data/vltwosubs.txt">http://www.ics.uzh.ch/~diemand/vl2/data/vltwosubs.txt</a>. </p></li>
+<li><p>This data set includes properties of galaxies. </p></li>
+<li><p>We use information on the coordinates, masses and radii.</p></li>
+<li><p>We choose to represent each galaxy by 1000 uniformly distributed points on the sphere defined by the radius of the galaxy. </p></li>
+<li><p>Milky Way is the largest galaxy at the coordinate beginning. </p></li>
+<li><p>You control the number of galaxies shown, depending on the: zoom in; ratio between the mass of Milky Way and mass of galaxies; and the viewing angle.  </p></li>
+<li><p>Units of distance are in mega-parsecs (Mpc). 1 Mpc = 1.92 * \(10^{19}\) miles.</p></li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>This is what it looks like:</h2>
+  </hgroup>
+  <article data-timings="">
+    <p><img src="assets/fig/plot-1.png" alt="plot of chunk plot"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Here is how we make a sphere</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">theta &lt;- runif(1000, 0, 180); fi &lt;- runif(1000, 0, 360)
+x &lt;- sin(theta) *cos(fi); y &lt;- sin(theta) * sin(fi); z &lt;- cos(theta)
+scatterplot3d(x,y,z, pch=19, cex.symbols=0.1)
+</code></pre>
+
+<p><img src="assets/fig/sphere-1.png" alt="plot of chunk sphere"> </p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Zoom through the Local Universe with our App!'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='How does it work?'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='This is what it looks like:'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Here is how we make a sphere'>
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- MathJax: Fall back to local if CDN offline but local image fonts are not supported (saves >100MB) -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        processEscapes: true
+      }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  <!-- <script src="https://c328740.ssl.cf1.rackcdn.com/mathjax/2.0-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script> -->
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null}});<\/script><script src="libraries/widgets/mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"><\/script>')
+</script>
+<!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>

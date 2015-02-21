@@ -1,0 +1,110 @@
+---
+title       : Shiny Application for Mapping Local Galaxies
+subtitle    : Developing Data Products Course Project
+author      : Miroslav Micic
+job         : 
+framework   : io2012        # {io2012, html5slides, shower, dzslides, ...}
+highlighter : highlight.js  # {highlight.js, prettify, highlight}
+hitheme     : tomorrow      # 
+widgets     : [mathjax]            # {mathjax, quiz, bootstrap}
+mode        : selfcontained # {standalone, draft}
+knit        : slidify::knit2slides
+---
+
+## Zoom through the Local Universe with our App!
+
+- Have you ever wondered how our Local Universe looks like?
+- If YES, then try our shiny application - "Local Galaxies".
+- Our app uses data from the state-of-the-art computer simulation called "via lactea 2".  
+
+Via Lactea 1 (VL-1) and Via Lactea 2 (VL-2) are high resolution simulations of our galaxy (Milky Way)
+and thousands of neighboring galaxies. Details of this project can be found at: 
+<http://www.ics.uzh.ch/~diemand/vl/>.
+
+- The goal of this application is to give you the perception of galaxy sizes, and distances between galaxies close to Milky Way. For simplicity, we do not explore the shapes of galaxies. 
+
+- You can find the application here:
+<https://miroslavmicic.shinyapps.io/Local_Galaxies/>
+
+--- .class #id 
+
+## How does it work?
+
+- Our application reads in the entire data set of VL-2 simulation : 
+<http://www.ics.uzh.ch/~diemand/vl2/data/vltwosubs.txt>. 
+
+- This data set includes properties of galaxies. 
+
+- We use information on the coordinates, masses and radii.
+
+- We choose to represent each galaxy by 1000 uniformly distributed points on the sphere defined by the radius of the galaxy. 
+
+- Milky Way is the largest galaxy at the coordinate beginning. 
+
+- You control the number of galaxies shown, depending on the: zoom in; ratio between the mass of Milky Way and mass of galaxies; and the viewing angle.  
+
+
+- Units of distance are in mega-parsecs (Mpc). 1 Mpc = 1.92 * $10^{19}$ miles.
+
+
+--- .class #id 
+
+
+## This is what it looks like:
+
+
+
+```{r plot, echo=FALSE}
+  library(scatterplot3d)
+  data <- read.table("/Users/miroslavmicic/coursera/products/Local_Galaxies/data/vltwosubs.txt", header=FALSE)
+  
+  colnames(data) <- c("id","distance", "peakVmax", "Vmax", "rVmax", "Mtidal", "rtidal", "x", "y", "z", "vx", "vy", "vz", "M300", "M600")
+
+  mass_ratio <- 100  
+  zoom <- 5
+  rotate <- 45
+
+x <- data$x[1e11/data$Mtidal <= mass_ratio]/1000
+y <- data$y[1e11/data$Mtidal <= mass_ratio]/1000
+z <- data$z[1e11/data$Mtidal <= mass_ratio]/1000
+m <- data$Mtidal[1e11/data$Mtidal <= mass_ratio]
+r <- data$rtidal[1e11/data$Mtidal <= mass_ratio]/1000
+
+zoom_in <- 4/zoom   # zooming in 
+rcut <- 0.02              # choose lower limit for zooming in
+# choose galaxies to show according to the zoom
+rpl <- r[r/zoom_in > rcut]
+xpl <- x[r/zoom_in > rcut]
+ypl <- y[r/zoom_in > rcut]
+zpl <- z[r/zoom_in > rcut] 
+
+# represent every galaxy with 1000 uniformly distributed 
+# points on the sphere of radius rpl
+theta <- runif(1000, 0, 180)
+fi <- runif(1000, 0, 360)
+xsp <- 0; ysp <- 0; zsp <- 0;
+xsp <- as.vector(xpl + rpl %o% sin(theta) *cos(fi))
+ysp <- as.vector(ypl + rpl %o% sin(theta) * sin(fi))
+zsp <- as.vector(zpl + rpl %o% cos(theta))
+
+# draw the 3D plot
+
+
+scatterplot3d(c(x,xsp),c(y,ysp),c(z,zsp), pch=19, cex.symbols=0.1, 
+              xlim=c(-zoom_in,zoom_in), ylim=c(-zoom_in,zoom_in), 
+              zlim=c(-zoom_in,zoom_in), angle=rotate, 
+              xlab="X [Mpc]", ylab="Y [Mpc]", zlab="Z [Mpc]")
+
+```
+
+
+--- .class #id 
+
+
+## Here is how we make a sphere
+
+```{r sphere}
+theta <- runif(1000, 0, 180); fi <- runif(1000, 0, 360)
+x <- sin(theta) *cos(fi); y <- sin(theta) * sin(fi); z <- cos(theta)
+scatterplot3d(x,y,z, pch=19, cex.symbols=0.1)
+```
